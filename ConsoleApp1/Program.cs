@@ -3,24 +3,22 @@
 // See https://aka.ms/new-console-template for more information
 
 // To open DAT files, 8.03
-// 1. Read in the file into memory
-//  1.A Read into Byte Array specifically
-// 2. Convert Byte Array into a class
-//  2.A Convert raw bytes into ASCII
-// 3. Diplay class data to the console
-// 4. Create workable way to search for specific information
+// 1. Read in the file into memory (done)
+//  1.A Read into Byte Array specifically (done)
+// 2. Convert Byte Array into a class (done)
+//  2.A Convert raw bytes into ASCII (done)
+// 3. Diplay class data to the console (done)
+// 4. Create workable way to search for specific information (done)
 // Start with just trying to get name - https://github.com/engineerjames/men-among-gods/blob/main/src/common/Character.h
 
 // New set of instructions, 8.04
-// 1. Proper Input Handling, i.e.- what happens if user types in 14 on main menu?
-// 2. When user inputs character number, what happens if that is NOT a number, like F or pizzahut?
-// 3. Last front end modification, keep application going unless end user truly wants to exit. (think while loop for something this simple)
+// 1. Proper Input Handling, i.e.- what happens if user types in 14 on main menu? (done)
+// 2. When user inputs character number, what happens if that is NOT a number, like F or pizzahut? (in progress)
+// 3. Keep app going unless end user truly wants to exit. (done)
 // 4. Nice to print out indication if template is used or not. A console.writeline advising "This template is Used." or "This template is not Used."
-// 5. Eliminate junk data, whenever a template is printed (Blank Template also has a bunch of shit at the end, how do you get rid of that?) HINT- null termination byte value is 0, look for first 0 then stop
+// 5. Eliminate junk data, whenever a template is printed) HINT- null termination byte value is 0, look for first 0 then stop
 // 6. Bonus- Pull out the kindred value (templar, seyan, etc.) starts on byte 285. Is a 4 byte integer. 
 // 7. Bonus Bonus- To identify sex AND class, Ishtar would combine bit level items. Take 4 bytes, stuff into integer, 
-
-
 
 
 //static const constexpr unsigned int KIN_MERCENARY   = ( 1u << 0 ); 0000 0000 0000 0001 = 1
@@ -46,11 +44,14 @@
 // KIN_MERCENARY & 0000 0000 0000 0001
 //                 -------------------
 //                 0000 0000 0000 0001 != 0  (TRUE!)
- 
+
 // myKindred   =   0000 0000 0000 0001
 // KIN_SEYAN     & 0000 0000 0000 0010
 //                 -------------------
 //                 0000 0000 0000 0000 == 0   (FALSE!)
+
+while (true)
+{
 
 
 static string MainMenu()
@@ -68,100 +69,140 @@ static string MainMenu()
 
 static string ReRunData()
 {
-    Console.Clear();
-    Console.WriteLine("Input your desired character number and press Enter.");
-    // Things to keep in mind-
-    //  Need to find starting byte
-    //  Size of character 3605 bytes
-    int startingbyte = (Convert.ToInt32(Console.ReadLine())) * 3605 + 1;
-
-    // Since we are looking strictly for names, this value can remain static.
-    int startingbytestoread = 40; 
-    
-
-    string filePath = @"C:\Users\secre\tchar.dat";
-
-    if (File.Exists(filePath))
-    {
-        try
+        while (true)
         {
-            byte[] fileContent = File.ReadAllBytes(filePath);
-            int contentLength = Math.Min(startingbytestoread, fileContent.Length - startingbyte);
-            byte[] buffer = new byte[contentLength];
-            Array.Copy(fileContent, startingbyte, buffer, 0, contentLength);
+            Console.Clear();
+            Console.WriteLine("Input your desired character number and press Enter.");
+            // Things to keep in mind-
+            //  Need to find starting byte
+            //  Size of character 3605 bytes
+            string startingbyte = Console.ReadLine();
+            int startingByteValue;
+            
 
-            string content = Encoding.ASCII.GetString(buffer);
-            Console.WriteLine("Read content from byte offset " + startingbyte + ":");
-            Console.WriteLine(content);
+            // Idea to take 3605 and then divide by total file size would give us a safe range for "if it's within 1 and <>"
+            // 4548 quantities for total characters
+            bool numOrString = int.TryParse(startingbyte, out startingByteValue);
+
+            if (numOrString)
+            {
+                string filePath = @"C:\Users\secre\tchar.dat";
+                if (File.Exists(filePath))
+                {
+                    int startingbytestoreadname = 40;
+
+                    try
+                    {
+                        byte[] fileContent = File.ReadAllBytes(filePath);
+
+                        byte[] buffer = new byte[startingbytestoreadname];
+                        Array.Copy(fileContent, startingByteValue, buffer, 0, startingbytestoreadname);
+
+                        string content = Encoding.ASCII.GetString(buffer);
+                        Console.WriteLine("Read content from byte offset " + startingbyte + ":");
+                        Console.WriteLine(content);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("An error occurred: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("File does NOT exist.");
+                }
+
+                Console.WriteLine("");
+                Console.WriteLine("Would you like to run a different set of numbers?");
+                Console.WriteLine("1: Yes, I want to run a different set.");
+                Console.WriteLine("2: No, I want to exit to the Main Menu");
+                Console.WriteLine("3: No, I want to exit out of the application itself.");
+
+                string runnewnumbers = Console.ReadLine();
+                if (runnewnumbers == "1")
+                {
+                    Console.Clear();
+                    ReRunData();
+                }
+                else if (runnewnumbers == "2")
+                {
+                    Console.Clear();
+                    MainMenu();
+                }
+                else if (runnewnumbers == "3")
+                {
+                    Console.Clear();
+                    Console.WriteLine("Exiting Now.");
+                    Thread.Sleep(1000);
+                    System.Environment.Exit(0);
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("I'm sorry, that was an incorrect prompt. Please try again.");
+                Thread.Sleep(2000);
+                Console.Clear();
+                ReRunData();
+            }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine("An error occurred: " + ex.Message);
-        }
-    }
-    else
-    {
-        Console.WriteLine("File does NOT exist.");
-    }
-
-    Console.WriteLine("");
-    Console.WriteLine("Would you like to run a different set of numbers?");
-    Console.WriteLine("1: Yes, I want to run a different set.");
-    Console.WriteLine("2: No, I want to exit");
-    
-    string runnewnumbers = Console.ReadLine();
-
-    return runnewnumbers;
+            
+            
+      
 }
-
-{
     
-    string MainMenuAnswer = MainMenu();
-  
-    if (MainMenuAnswer == "1")
+
+
+
     {
-        string runnewnumbers = ReRunData();
-        if (runnewnumbers == "1")
+        string MainMenuAnswer = MainMenu();
+
+        if (MainMenuAnswer == "1")
         {
             Console.Clear();
             ReRunData();
         }
+        else if (MainMenuAnswer == "2")
+        {
+            Console.Clear();
+            Console.WriteLine("Are you certain you want to exit?");
+            Console.WriteLine("1. Yes, Exit.");
+            Console.WriteLine("2. No, I've changed my mind.");
+
+            string sureyouwanttoexit = Console.ReadLine();
+
+            if (sureyouwanttoexit == "1")
+            {
+                Console.Clear();
+                Console.WriteLine("Exiting Now.");
+                Thread.Sleep(1000);
+                System.Environment.Exit(0);
+            }
+            else if (sureyouwanttoexit == "2")
+            {
+                Console.Clear();
+                Console.WriteLine("Returning you to the Main Menu.");
+                Thread.Sleep(1000);
+                MainMenu();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Incorrect choice- returning to Main Menu until you can learn how to use choices.");
+                Thread.Sleep(2000);
+                Console.Clear();
+                MainMenu();
+            }
+        }
         else
         {
+            Console.Clear();
+            Console.WriteLine("I'm sorry, that is an incorrect choice. Lets try this again, shall we?");
+            Thread.Sleep(2000);
             Console.Clear();
             MainMenu();
         }
     }
-    else if (MainMenuAnswer == "2")
-    {
-        Console.Clear();
-        Console.WriteLine("Are you certain you want to exit?");
-        Console.WriteLine("1. Yes, Exit.");
-        Console.WriteLine("2. No, I've changed my mind.");
 
-        string sureyouwanttoexit = Console.ReadLine();
-
-        if (sureyouwanttoexit == "1")
-        {
-            Console.Clear();
-            Console.WriteLine("Exiting Now.");
-            Thread.Sleep(1000);
-            System.Environment.Exit(0);
-        }
-        else if (sureyouwanttoexit == "2")
-        {
-            Console.Clear();
-            Console.WriteLine("Returning you to the Main Menu.");
-            Thread.Sleep(1000);
-            MainMenu();
-        }
-        else
-        {
-            Console.Clear();
-            Console.WriteLine("Incorrect choice- returning to Main Menu until you can learn how to use choices.");
-            Thread.Sleep(1000);
-            MainMenu();
-        }
-    }
 
 }
