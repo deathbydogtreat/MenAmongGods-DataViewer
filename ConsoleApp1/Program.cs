@@ -13,7 +13,7 @@
 
 // New set of instructions, 8.04
 // 1. Proper Input Handling, i.e.- what happens if user types in 14 on main menu? (done)
-// 2. When user inputs character number, what happens if that is NOT a number, like F or pizzahut? (in progress)
+// 2. When user inputs character number, what happens if that is NOT a number, like F or pizzahut? (done)
 // 3. Keep app going unless end user truly wants to exit. (done)
 // 4. Nice to print out indication if template is used or not. A console.writeline advising "This template is Used." or "This template is not Used."
 // 5. Eliminate junk data, whenever a template is printed) HINT- null termination byte value is 0, look for first 0 then stop
@@ -78,7 +78,6 @@ static string ReRunData()
             //  Size of character 3605 bytes
             string startingbyte = Console.ReadLine();
             int startingByteValue;
-            
 
             // Idea to take 3605 and then divide by total file size would give us a safe range for "if it's within 1 and <>"
             // 4548 quantities for total characters
@@ -89,18 +88,40 @@ static string ReRunData()
                 string filePath = @"C:\Users\secre\tchar.dat";
                 if (File.Exists(filePath))
                 {
-                    int startingbytestoreadname = 40;
+                    int startingbytestoreadname = Convert.ToInt32 (startingByteValue) * 3605 + 1; // This controls the starting point for reading bytes
+                    int findCharacterName = 40; // This controls how many bytes are listed
+                    
+                    // Commented out the code for now, but starting to experiment with byte converters- my thought is provide an int value, then use a byte converter and print the information to get what I want?
+                    int findCharacterKindred = 285;
+                    //byte[] bytes = BitConverter.GetBytes(findCharacterKindred);
+                    //if (BitConverter.IsLittleEndian)
+                        //Array.Reverse (bytes);
+                    int findCharacterUsed = 0; // Trying to figure out how to determine the used or not value
 
                     try
                     {
                         byte[] fileContent = File.ReadAllBytes(filePath);
 
-                        byte[] buffer = new byte[startingbytestoreadname];
-                        Array.Copy(fileContent, startingByteValue, buffer, 0, startingbytestoreadname);
+                        byte[] buffer1 = new byte[findCharacterName]; // I'm not sure what this does, still.
+                        Array.Copy(fileContent, startingbytestoreadname, buffer1, 0, findCharacterName);
 
-                        string content = Encoding.ASCII.GetString(buffer);
-                        Console.WriteLine("Read content from byte offset " + startingbyte + ":");
+                        string content = Encoding.ASCII.GetString(buffer1);
+                        Console.WriteLine("Character Name:");
                         Console.WriteLine(content);
+
+                        byte[] buffer2 = new byte[findCharacterKindred]; // I'm not sure what this does, still.
+                        Array.Copy(fileContent, startingbytestoreadname, buffer2, 0, findCharacterKindred);
+
+                        string content2 = Encoding.ASCII.GetString(buffer2);
+                        Console.WriteLine("Character description:");
+                        Console.WriteLine(content2);
+
+                        byte[] buffer3 = new byte[findCharacterUsed]; // I'm not sure what this does, still.
+                        Array.Copy(fileContent, startingbytestoreadname, buffer3, 0, findCharacterUsed);
+
+                        string content3 = Encoding.ASCII.GetString(buffer3);
+                        Console.WriteLine("Character used?");
+                        Console.WriteLine(content3);
                     }
                     catch (Exception ex)
                     {
