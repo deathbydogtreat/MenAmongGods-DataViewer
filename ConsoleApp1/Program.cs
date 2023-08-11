@@ -15,7 +15,7 @@
 // 1. Proper Input Handling, i.e.- what happens if user types in 14 on main menu? (done)
 // 2. When user inputs character number, what happens if that is NOT a number, like F or pizzahut? (done)
 // 3. Keep app going unless end user truly wants to exit. (done)
-// 4. Nice to print out indication if template is used or not. A console.writeline advising "This template is Used." or "This template is not Used."
+// 4. Nice to print out indication if template is used or not. A console.writeline advising "This template is Used." or "This template is not Used." (done)
 // 5. Eliminate junk data, whenever a template is printed) HINT- null termination byte value is 0, look for first 0 then stop
 // 6. Bonus- Pull out the kindred value (templar, seyan, etc.) starts on byte 285. Is a 4 byte integer. 
 // 7. Bonus Bonus- To identify sex AND class, Ishtar would combine bit level items. Take 4 bytes, stuff into integer, 
@@ -89,30 +89,28 @@ static string ReRunData()
                 if (File.Exists(filePath))
                 {
                     int startingbytestoreadname = Convert.ToInt32 (startingByteValue) * 3605; // This controls the starting point for reading bytes
-                    int findCharacterName = 40; // This controls how many bytes are listed
+                    int characterNameSize = 40; // This controls how many bytes are listed
                     
                     // Commented out the code for now, but starting to experiment with byte converters- my thought is provide an int value, then use a byte converter and print the information to get what I want?
                     int findCharacterKindred = 285;
-                    //byte[] bytes = BitConverter.GetBytes(findCharacterKindred);
-                    //if (BitConverter.IsLittleEndian)
-                        //Array.Reverse (bytes);
-                    int findCharacterUsed = 1; // Trying to figure out how to determine the used or not value
+                    // Trying to figure out how to determine the used or not value  Guard
+                    int findCharacterUsed = 1; 
 
                     try
                     {
                         byte[] fileContent = File.ReadAllBytes(filePath);
 
-                        byte[] buffer1 = new byte[findCharacterName]; // I'm not sure what this does, still.
-                        Array.Copy(fileContent, startingbytestoreadname, buffer1, 0, findCharacterName);
-
+                        byte[] buffer1 = new byte[characterNameSize]; // I'm not sure what this does, still.
+                        Array.Copy(fileContent, startingbytestoreadname, buffer1, 0, characterNameSize);
                         string content = Encoding.ASCII.GetString(buffer1);
+                        content = content.TrimStart('\0', '').TrimEnd('\0', '');
                         Console.WriteLine("Character Name:");
                         Console.WriteLine(content);
 
                         byte[] buffer2 = new byte[findCharacterKindred]; // I'm not sure what this does, still.
                         Array.Copy(fileContent, startingbytestoreadname, buffer2, 0, findCharacterKindred);
-
                         string content2 = Encoding.ASCII.GetString(buffer2);
+                        content2 = content2.TrimStart('\0', '').TrimEnd('\0', '');
                         Console.WriteLine("Character description:");
                         Console.WriteLine(content2);
 
