@@ -88,7 +88,7 @@ static string ReRunData()
                 string filePath = @"C:\Users\secre\tchar.dat";
                 if (File.Exists(filePath))
                 {
-                    int startingbytestoreadname = Convert.ToInt32 (startingByteValue) * 3605 + 1; // This controls the starting point for reading bytes
+                    int startingbytestoreadname = Convert.ToInt32 (startingByteValue) * 3605; // This controls the starting point for reading bytes
                     int findCharacterName = 40; // This controls how many bytes are listed
                     
                     // Commented out the code for now, but starting to experiment with byte converters- my thought is provide an int value, then use a byte converter and print the information to get what I want?
@@ -96,7 +96,7 @@ static string ReRunData()
                     //byte[] bytes = BitConverter.GetBytes(findCharacterKindred);
                     //if (BitConverter.IsLittleEndian)
                         //Array.Reverse (bytes);
-                    int findCharacterUsed = 0; // Trying to figure out how to determine the used or not value
+                    int findCharacterUsed = 1; // Trying to figure out how to determine the used or not value
 
                     try
                     {
@@ -120,8 +120,14 @@ static string ReRunData()
                         Array.Copy(fileContent, startingbytestoreadname, buffer3, 0, findCharacterUsed);
 
                         string content3 = Encoding.ASCII.GetString(buffer3);
-                        Console.WriteLine("Character used?");
-                        Console.WriteLine(content3);
+                        if (findCharacterUsed == 1) 
+                        {
+                            Console.WriteLine("Character template in use.");
+                        }
+                        else if (findCharacterUsed == 0) 
+                        {
+                            Console.WriteLine("Character template not in use.");
+                        }
                     }
                     catch (Exception ex)
                     {
