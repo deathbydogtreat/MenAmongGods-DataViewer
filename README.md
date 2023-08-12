@@ -47,3 +47,46 @@ static const constexpr unsigned int KIN_SORCERER    = ( 1u << 11 ); // 2048
 // KIN_SEYAN     & 0000 0000 0000 0010
 //                 -------------------
 //                 0000 0000 0000 0000 == 0   (FALSE!)
+
+
+
+**// Thief - Kindred 137
+// KIN_FEMALE / KIN_MALE = 256 / 128
+// KIN_MERCENARY         = 1
+// KIN_MONSTER           = 8
+// ----------------------------
+//                         137
+
+// 1 byte = 8 bits
+//        = 12 bits
+// ------------------
+// 2 bytes = 16 bits
+// 4 bytes = 32 bits
+//
+// 0000 0000 0000 0000 0000 0000 0000 0000 <-- We don't care about the 'top' 16
+//
+// 0000 0000 0000 0000
+// 0000 0000 1000 1001 = 137
+//
+//
+// Bit-wise AND 'if (kindredValue & KIN_WARRIOR)'
+// 0000 0000 1000 1001 = 137
+// 0000 0010 0000 0000 = 1024
+// 0000 0000 0000 0000 = 0 (FALSE), ANYTHING ELSE = TRUE
+//
+// What about one that DOES work? KIN_MALE?
+// 0000 0000 1000 1001 = 137
+// 0000 0000 1000 0000 = 128
+// 0000 0000 1000 0000 = 128 = TRUE
+static const constexpr unsigned int KIN_MERCENARY   = ( 1u << 0 );  // 1     1
+static const constexpr unsigned int KIN_SEYAN_DU    = ( 1u << 1 );  // 2     10
+static const constexpr unsigned int KIN_PURPLE      = ( 1u << 2 );  // 4     100
+static const constexpr unsigned int KIN_MONSTER     = ( 1u << 3 );  // 8     1000
+static const constexpr unsigned int KIN_TEMPLAR     = ( 1u << 4 );  // 16    10000
+static const constexpr unsigned int KIN_ARCHTEMPLAR = ( 1u << 5 );  // 32    ******
+static const constexpr unsigned int KIN_HARAKIM     = ( 1u << 6 );  // 64
+static const constexpr unsigned int KIN_MALE        = ( 1u << 7 );  // 128
+static const constexpr unsigned int KIN_FEMALE      = ( 1u << 8 );  // 256
+static const constexpr unsigned int KIN_ARCHHARAKIM = ( 1u << 9 );  // 512
+static const constexpr unsigned int KIN_WARRIOR     = ( 1u << 10 ); // 1024
+static const constexpr unsigned int KIN_SORCERER    = ( 1u << 11 ); // 2048**
