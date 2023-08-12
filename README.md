@@ -19,18 +19,18 @@ Tasks so far-
 // 7. Bonus Bonus- To identify sex AND class, Ishtar would combine bit level items. Take 4 bytes, stuff into integer, 
 
 
-//static const constexpr unsigned int KIN_MERCENARY   = ( 1u << 0 ); 0000 0000 0000 0001 = 1
-//static const constexpr unsigned int KIN_SEYAN_DU    = ( 1u << 1 ); 0000 0000 0000 0010 = 2
-//static const constexpr unsigned int KIN_PURPLE      = ( 1u << 2 ); 0000 0000 0000 0100 = 4
-//static const constexpr unsigned int KIN_MONSTER     = ( 1u << 3 );
-//static const constexpr unsigned int KIN_TEMPLAR     = ( 1u << 4 );
-//static const constexpr unsigned int KIN_ARCHTEMPLAR = ( 1u << 5 );
-//static const constexpr unsigned int KIN_HARAKIM     = ( 1u << 6 );
-//static const constexpr unsigned int KIN_MALE        = ( 1u << 7 );
-//static const constexpr unsigned int KIN_FEMALE      = ( 1u << 8 );
-//static const constexpr unsigned int KIN_ARCHHARAKIM = ( 1u << 9 );
-//static const constexpr unsigned int KIN_WARRIOR     = ( 1u << 10 );
-//static const constexpr unsigned int KIN_SORCERER    = ( 1u << 11 );
+static const constexpr unsigned int KIN_MERCENARY   = ( 1u << 0 );  // 1
+static const constexpr unsigned int KIN_SEYAN_DU    = ( 1u << 1 );  // 2
+static const constexpr unsigned int KIN_PURPLE      = ( 1u << 2 );  // 4
+static const constexpr unsigned int KIN_MONSTER     = ( 1u << 3 );  // 8
+static const constexpr unsigned int KIN_TEMPLAR     = ( 1u << 4 );  // 16
+static const constexpr unsigned int KIN_ARCHTEMPLAR = ( 1u << 5 );  // 32
+static const constexpr unsigned int KIN_HARAKIM     = ( 1u << 6 );  // 64
+static const constexpr unsigned int KIN_MALE        = ( 1u << 7 );  // 128
+static const constexpr unsigned int KIN_FEMALE      = ( 1u << 8 );  // 256
+static const constexpr unsigned int KIN_ARCHHARAKIM = ( 1u << 9 );  // 512
+static const constexpr unsigned int KIN_WARRIOR     = ( 1u << 10 ); // 1024
+static const constexpr unsigned int KIN_SORCERER    = ( 1u << 11 ); // 2048
 //
 //
 // 1. Get integer value of kindred - myKindred
