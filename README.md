@@ -14,9 +14,9 @@ Tasks so far-
 // 2. When user inputs character number, what happens if that is NOT a number, like F or pizzahut? (done)
 // 3. Keep app going unless end user truly wants to exit. (done)
 // 4. Nice to print out indication if template is used or not. A console.writeline advising "This template is Used." or "This template is not Used." (done)
-// 5. Eliminate junk data, whenever a template is printed) HINT- null termination byte value is 0, look for first 0 then stop
-// 6. Bonus- Pull out the kindred value (templar, seyan, etc.) starts on byte 285. Is a 4 byte integer. 
-// 7. Bonus Bonus- To identify sex AND class, Ishtar would combine bit level items. Take 4 bytes, stuff into integer, 
+// 5. Eliminate junk data, whenever a template is printed) HINT- null termination byte value is 0, look for first 0 then stop (done)
+// 6. Bonus- Pull out the kindred value (templar, seyan, etc.) starts on byte 285. Is a 4 byte integer. (done)
+// 7. Bonus Bonus- To identify sex AND class, Ishtar would combine bit level items. Take 4 bytes, stuff into integer. (ON FINAL STEP)
 
 
 static const constexpr unsigned int KIN_MERCENARY   = ( 1u << 0 );  // 1
