@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using ConsoleApp1;
+using System.Text;
 
 // See https://aka.ms/new-console-template for more information
 
@@ -39,7 +40,6 @@ static string ReRunData()
             Console.Clear();
             Console.WriteLine("Input your desired character number and press Enter.");
             // Things to keep in mind-
-            //  Need to find starting byte
             //  Size of character 3605 bytes
             string startingbyte = Console.ReadLine();
             int characterTemplateNumber;
@@ -62,20 +62,6 @@ static string ReRunData()
                     int kindredBytePoint = characterTemplateNumber * 3605 + 281;
                     int characterKindredSize = 4;
 
-                    // static const constexpr unsigned int KIN_MERCENARY = (1u << 0);  // 1     1
-                    // static const constexpr unsigned int KIN_SEYAN_DU = (1u << 1);  // 2     10
-                    // static const constexpr unsigned int KIN_PURPLE = (1u << 2);  // 4     100
-                    // static const constexpr unsigned int KIN_MONSTER = (1u << 3);  // 8     1000
-                    // static const constexpr unsigned int KIN_TEMPLAR = (1u << 4);  // 16    10000
-                    // static const constexpr unsigned int KIN_ARCHTEMPLAR = (1u << 5);  // 32    ******
-                    // static const constexpr unsigned int KIN_HARAKIM = (1u << 6);  // 64
-                    // static const constexpr unsigned int KIN_MALE = (1u << 7);  // 128
-                    // static const constexpr unsigned int KIN_FEMALE = (1u << 8);  // 256
-                    // static const constexpr unsigned int KIN_ARCHHARAKIM = (1u << 9);  // 512
-                    // static const constexpr unsigned int KIN_WARRIOR = (1u << 10); // 1024
-                    // static const constexpr unsigned int KIN_SORCERER = (1u << 11); // 2048**
-
-
                     // int findCharacterUsed = 1; Finding if a character is usable needs to be the starting point, not at the end.
                     // good test case, #12- should be name "Thief"
                     // 137 is the 
@@ -87,8 +73,7 @@ static string ReRunData()
                         byte[] bufferUsed = new byte[characterUsedSize];
                         Array.Copy(fileContent, usedBytePoint, bufferUsed, 0, characterUsedSize);
                         if (BitConverter.IsLittleEndian) 
-                        { 
-                        
+                        {
                             Array.Reverse(bufferUsed);
                             int contentUsed = BitConverter.ToInt32(bufferUsed, 0);
 
