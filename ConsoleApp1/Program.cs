@@ -7,11 +7,9 @@ using System.Text;
 //{
 //    std::uint8_t used; // 0
                        // general
-
 //    char name[40];         // 1
 //    char reference[40];    // 41
 //    char description[200]; // 81
-
 //    std::int32_t kindred; // 281
 
 
@@ -53,8 +51,7 @@ static string ReRunData()
                 string filePath = @"C:\Users\secre\tchar.dat";
                 if (File.Exists(filePath))
                 {
-                    int usedBytePoint = characterTemplateNumber * 3605 - 3;
-                    int characterUsedSize = 4;
+                    int usedBytePoint = characterTemplateNumber * 3605;
 
                     int nameBytePoint = characterTemplateNumber * 3605 + 1; // This controls the starting point for reading bytes
                     int characterNameSize = 40; // This controls how many bytes are listed
@@ -62,45 +59,45 @@ static string ReRunData()
                     int kindredBytePoint = characterTemplateNumber * 3605 + 281;
                     int characterKindredSize = 4;
 
-                    // int findCharacterUsed = 1; Finding if a character is usable needs to be the starting point, not at the end.
-                    // good test case, #12- should be name "Thief"
-                    // 137 is the 
+                    int descriptionBytePoint = characterTemplateNumber * 3605 + 81;
+                    int characterDescriptionSize = 200;
+
+                    // Figure out how to incorporate my new class/function inside main
+                    // var a = new whatAreTemplateValues();
 
                     try
                     {
                         byte[] fileContent = File.ReadAllBytes(filePath);
-
-                        byte[] bufferUsed = new byte[characterUsedSize];
-                        Array.Copy(fileContent, usedBytePoint, bufferUsed, 0, characterUsedSize);
-                        if (BitConverter.IsLittleEndian) 
-                        {
-                            Array.Reverse(bufferUsed);
-                            int contentUsed = BitConverter.ToInt32(bufferUsed, 0);
-
-                            if (contentUsed == 1)
+                       
+                            if (fileContent[usedBytePoint] == 1)
                             {
 
-                                byte[] bufferName = new byte[characterNameSize]; // I'm not sure what this does, still.
+                                byte[] bufferName = new byte[characterNameSize]; 
                                 Array.Copy(fileContent, nameBytePoint, bufferName, 0, characterNameSize);
                                 string contentName = Encoding.ASCII.GetString(bufferName);
                                 contentName = contentName.TrimEnd('\0', '');
                                 Console.WriteLine("Character Name:");
                                 Console.WriteLine(contentName);
 
-                                byte[] bufferKindred = new byte[characterKindredSize]; // need to convert the buffer here into a 32 bit signed integer
+                                byte[] bufferKindred = new byte[characterKindredSize]; 
                                 Array.Copy(fileContent, kindredBytePoint, bufferKindred, 0, characterKindredSize);
                                 int contentKindred = BitConverter.ToInt32(bufferKindred, 0);
                                 Console.WriteLine("Character kindred:");
                                 Console.WriteLine(contentKindred);
+
+                                byte[] bufferDescription = new byte[characterDescriptionSize]; // Are there a lot of characters whose name and description are identical?
+                                Array.Copy(fileContent, descriptionBytePoint, bufferDescription, 0, characterDescriptionSize);
+                                string contentDescription = Encoding.ASCII.GetString(bufferDescription);
+                                contentDescription = contentDescription.TrimEnd('\0');
+                                Console.WriteLine("Character Description:");
+                                Console.WriteLine(contentDescription);
+
+                                
                             }
                             else
                             {
                                 Console.WriteLine("Character not used, please provide other data.");
                             }
-
-                        }
-
-                       
                         
                     }
                     catch (Exception ex)
